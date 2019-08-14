@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Sumankcdotcom_AdvInstagram extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Sumankcdotcom
+ * @package        Sumankcdotcom_AdvInstagram
+ * @copyright      Copyright (c) 2016
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <modules>
+        <Sumankcdotcom_AdvInstagram>
+            <version>1.0.0</version>
+        </Sumankcdotcom_AdvInstagram>
+    </modules>
+    <global>
+        <resources>
+            <sumankcdotcom_advinstagram_setup>
+                <setup>
+                    <module>Sumankcdotcom_AdvInstagram</module>
+                    <class>Sumankcdotcom_AdvInstagram_Model_Resource_Setup</class>
+                </setup>
+            </sumankcdotcom_advinstagram_setup>
+        </resources>
+        <blocks>
+            <sumankcdotcom_advinstagram>
+                <class>Sumankcdotcom_AdvInstagram_Block</class>
+            </sumankcdotcom_advinstagram>
+        </blocks>
+        <helpers>
+            <sumankcdotcom_advinstagram>
+                <class>Sumankcdotcom_AdvInstagram_Helper</class>
+            </sumankcdotcom_advinstagram>
+        </helpers>
+        <models>
+            <advinstagram>
+                <class>Sumankcdotcom_AdvInstagram_Model</class>
+             </advinstagram>
+            <sumankcdotcom_advinstagram>
+                <class>Sumankcdotcom_AdvInstagram_Model</class>
+                <resourceModel>sumankcdotcom_advinstagram_resource</resourceModel>
+            </sumankcdotcom_advinstagram>
+            <sumankcdotcom_advinstagram_resource>
+                <class>Sumankcdotcom_AdvInstagram_Model_Resource</class>
+                <entities>
+                    <post>
+                        <table>sumankcdotcom_advinstagram_post</table>
+                    </post>
+                    <post_store>
+                        <table>sumankcdotcom_advinstagram_post_store</table>
+                    </post_store>
+                </entities>
+            </sumankcdotcom_advinstagram_resource>
+        </models>
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <sumankcdotcom_advinstagram>
+                    <file>sumankcdotcom_advinstagram.xml</file>
+                </sumankcdotcom_advinstagram>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Sumankcdotcom_AdvInstagram>
+                    <files>
+                        <default>Sumankcdotcom_AdvInstagram.csv</default>
+                    </files>
+                </Sumankcdotcom_AdvInstagram>
+            </modules>
+        </translate>
+        <global_search>
+            <post>
+                <class>sumankcdotcom_advinstagram/adminhtml_search_post</class>
+                <acl>sumankcdotcom_advinstagram</acl>
+            </post>
+        </global_search>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Sumankcdotcom_AdvInstagram before="Mage_Adminhtml">Sumankcdotcom_AdvInstagram_Adminhtml</Sumankcdotcom_AdvInstagram>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <frontend>
+        <routers>
+            <sumankcdotcom_advinstagram>
+                <use>standard</use>
+                <args>
+                    <module>Sumankcdotcom_AdvInstagram</module>
+                    <frontName>advinstagram</frontName>
+                </args>
+            </sumankcdotcom_advinstagram>
+        </routers>
+        <layout>
+            <updates>
+                <sumankcdotcom_advinstagram>
+                    <file>sumankcdotcom_advinstagram.xml</file>
+                </sumankcdotcom_advinstagram>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Sumankcdotcom_AdvInstagram>
+                    <files>
+                        <default>Sumankcdotcom_AdvInstagram.csv</default>
+                    </files>
+                </Sumankcdotcom_AdvInstagram>
+            </modules>
+        </translate>
+    </frontend>
+    <default>
+        <sumankcdotcom_advinstagram>
+            <post>
+                <breadcrumbs>1</breadcrumbs>
+            </post>
+        </sumankcdotcom_advinstagram>
+    </default>
+</config>

@@ -1,0 +1,112 @@
+<?php 
+/**
+ * Sumankcdotcom_AdvInstagram extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Sumankcdotcom
+ * @package        Sumankcdotcom_AdvInstagram
+ * @copyright      Copyright (c) 2016
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+/**
+ * Post list template
+ *
+ * @category    Sumankcdotcom
+ * @package     Sumankcdotcom_AdvInstagram
+ * @author      Suman kc [SUMANKC.COM]
+ */
+?>
+<style type="text/css">
+    #instafeed{overflow:hidden;clear: both};
+</style>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php 
+    $post_type = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/post_type');
+    $user_id = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/user_id');
+    $access_token = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/access_token');
+    $filter_post = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/filter_post');
+    $limit = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/limit');
+    $link_posts = Mage::getStoreConfig('sumankcdotcom_advinstagram/post_features/link_posts');
+    $caption = Mage::getStoreConfig('sumankcdotcom_advinstagram/post_features/caption');
+    $likes_count = Mage::getStoreConfig('sumankcdotcom_advinstagram/post_features/likes_count');
+    $comment_count = Mage::getStoreConfig('sumankcdotcom_advinstagram/post_features/comment_count');
+
+    $tagname = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/tag_name');
+    $client_id = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/client_id');
+    $resolution = Mage::getStoreConfig('sumankcdotcom_advinstagram/post_features/resolution');
+    $filter_posts = Mage::getStoreConfig('sumankcdotcom_advinstagram/post/filter_posts');
+?>
+<?php if(!$filter_posts): ?>
+    <div id="instafeed"></div>
+    <script type="text/javascript">
+        var templating = caption = likes = comment = '';
+        <?php if($link_posts){?> 
+            templating = '<a target="_blank" href="{{link}}"><img src="{{image}}" /></a>';
+        <?php }else{?>
+            templating = '<img src="{{image}}" />';
+        <?php } ?>
+        <?php if($caption){?> caption = '<span class="insta_caption">{{caption}}</span>'; <?php }?>
+        <?php if($likes_count){?> likes = '<span class="insta_likes">{{likes}} Likes </span>'; <?php }?>
+        <?php if($comment_count){?> comment = '<span class="insta_comment">{{comments}} Comments</span>'; <?php }?>
+        templating = '<div class="individual-post">'+templating + caption + likes + comment +'</div>';
+            var userFeed = new Instafeed({
+                get: 'user',
+                userId: "<?php echo $user_id; ?>",
+                accessToken: "<?php echo $access_token; ?>",
+                limit : "<?php echo $limit; ?>",
+                resolution : "<?php echo $resolution ?>",
+                template: templating
+            });
+            var feed = new Instafeed({
+                get: 'tagged',
+                tagName: "<?php echo $tagname; ?>",
+                clientId: "<?php echo $client_id; ?>",
+                limit : "<?php echo $limit; ?>",
+                resolution : "<?php echo $resolution ?>",
+                template: templating
+            });
+        <?php if($post_type=='account'){ ?> userFeed.run();<?php }elseif($post_type=='hashtag'){ ?>feed.run();<?php }?>
+    </script>
+
+<?php else: ?>
+    <?php $_posts = $this->getPosts(); ?> <!--/ Fetches only the selected posts from backend -->
+    <?php if ($_posts->getSize() > 0) :?>
+            <div class="post-list-container">
+                <?php foreach ($_posts as $_post) : ?>
+                    <?php 
+                            $media_id = $_post->getMediaId();
+                            /* Call Instagram API */
+                            $url = 'https://api.instagram.com/v1/media/'.$media_id.'?access_token='.$access_token;
+                            $data = file_get_contents($url);
+                            $response = json_decode($data);
+                            $image = $response->data->images->$resolution->url;
+                            $likes = $response->data->likes->count;
+                            $link = $response->data->link;
+                            $insta_caption = htmlspecialchars($response->data->caption->text);
+                            $username = $response->data->caption->from->username;
+                            $comments = $response->data->comments->count;
+
+                            echo '<div class="individual-post">';
+                            if($link_posts){ echo '<a href="" target="_blank"><img src="'.$image.'"/></a>'; }else{ echo '<img src="'.$image.'"/>'; }
+                            if($caption){
+                                echo '<span class="insta_caption">'.$insta_caption.'</span>';
+                            }if($likes_count){
+                                echo '<span class="insta_likes"> '.$likes.' Likes </span>';
+                            }if($comment_count){
+                                echo '<span class="insta_comment"> '.$comments.' Comments</span>';
+                            }
+                            echo '</div>';
+                        ?>
+                <?php endforeach;?>
+            </div>
+    <?php else : ?>
+        <?php echo Mage::helper('sumankcdotcom_advinstagram')->__('There are no posts at this moment');?>
+    <?php endif;?>
+
+<?php endif; ?>
