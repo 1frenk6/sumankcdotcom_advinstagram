@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Sumankcdotcom_AdvInstagram",
+    "name": "OpenMageModuleFostering\/Sumankcdotcom_AdvInstagram",
     "type": "magento-module",
     "license": "MIT-License",
     "homepage": "",
     "description": "Advance instagram module to fetch posts from instagram accounts or hastagged globally",
     "authors": [
-    {
-        "name": "Suman K.C",
-        "email": "sumankc55@gmail.com"
-    }
-],
+        {
+            "name": "Suman K.C",
+            "email": "sumankc55@gmail.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
